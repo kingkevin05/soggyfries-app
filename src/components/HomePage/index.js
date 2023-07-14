@@ -1,31 +1,86 @@
-import React, { useEffect, useState } from 'react';
+import React from "react";
+import {
+  Box,
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  CardMedia,
+} from "@mui/material";
+import DisplayTime from "./DisplayTime"; // Remember to replace with your correct import path
+import DisplayWeather from "./DisplayWeather"; // Remember to replace with your correct import path
+import Product from "./../ShopPage/Product";
 
-function HomePage() {
-  const [date, setDate] = useState(new Date());
-  const [weather, setWeather] = useState(null);
+const HomePage = () => {
+  const dummyText =
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.";
 
-  // Update the time every second
-  useEffect(() => {
-    const timerID = setInterval(() => setDate(new Date()), 1000);
-    return function cleanup() {
-      clearInterval(timerID);
-    };
-  });
+  const imagePlaceholder = "https://via.placeholder.com/150"; // replace with your image source
 
-  // Fetch weather data when the component mounts
-  useEffect(() => {
-    fetch("http://api.openweathermap.org/data/2.5/weather?q=YourCity&appid=9bd0603a04cb662f60d9ff018ae27e92")
-      .then(response => response.json())
-      .then(data => setWeather(data.main));
-  }, []);
+  const products = [
+    {
+      id: 1,
+      name: "Product 1",
+      description: "This is a description for product 1",
+      price: "$100",
+      imageUrl: "https://via.placeholder.com/150",
+    },
+    {
+      id: 2,
+      name: "Product 2",
+      description: "This is a description for product 2",
+      price: "$200",
+      imageUrl: "https://via.placeholder.com/150",
+    },
+    {
+      id: 3,
+      name: "Product 3",
+      description: "This is a description for product 3",
+      price: "$300",
+      imageUrl: "https://via.placeholder.com/150",
+    },
+    // Add as many products as you like...
+  ];
 
   return (
-    <div>
-      <h1>Home Page</h1>
-      <h2>Current Time: {date.toLocaleTimeString()}</h2>
-      {weather && <h2>Current Temperature: {weather.temp}</h2>}
-    </div>
+    <Box p={3}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <DisplayTime />
+          <DisplayWeather />
+        </Grid>
+        {[1, 2, 3, 4].map(value => (
+          <Grid key={value} item xs={12} sm={6} md={3}>
+            <Card>
+              <CardContent>
+                <Typography>{dummyText}</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+        {[1, 2, 3, 4].map(value => (
+          <Grid key={value} item xs={12} sm={6} md={3}>
+            <Card>
+              <CardMedia
+                component="img"
+                height="140"
+                image={imagePlaceholder}
+                alt="Placeholder"
+              />
+            </Card>
+          </Grid>
+        ))}
+        <Grid item xs={12}>
+          <Typography variant="h5">Products:</Typography>
+          <ul>
+            {products.map(product => (
+              <Product key={product.id} product={product} />
+            ))}
+          </ul>
+        </Grid>
+      </Grid>
+    </Box>
   );
-}
+};
 
 export default HomePage;
